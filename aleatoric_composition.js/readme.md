@@ -1,1 +1,1 @@
-[aleatoric_composition](./aleatoric_composition.png)
+![aleatoric_composition](./aleatoric_composition.png)
