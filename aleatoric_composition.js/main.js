@@ -36,7 +36,7 @@ function init() {
   // create bass percussion
   // bass_btn = ;
   bass_btn.message("bgcolor", 0., 0.5, 1., 1.);
-  p.connect(bass_delaybang, 0, bass_btn, 0);
+  //p.connect(bass_delaybang, 0, bass_btn, 0);
   bass_fnctn = p.newdefault(300, 480, "function");
   bass_fnctn.message("bgcolor", 0., 0., 0., 0.);
   bass_fnctn.message("linecolor", 0., 0.5, 1., 1.);
@@ -108,7 +108,7 @@ function valuechanged(data) {
   // post("slider value: " + scale(data.value, 0, 1000, 0, 6.28) + "\n");
   pos = bass_btn.getattr("patching_position");
   // post("button value: " + ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28 + "\n");
-  if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.1 ){
+  if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.003 ){
     bass_btn.message("1");
   }
 }
