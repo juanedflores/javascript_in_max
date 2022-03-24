@@ -12,7 +12,7 @@ tsk_init.schedule();
 // tsk_init.schedule();
 
 var total_percussions = 2;
-var total_oscillators = 2;
+var total_oscillators = 1;
 var percussions_to_randomize = [];
 var percussion_content = [];
 var oscs_to_randomize = [];
@@ -47,71 +47,13 @@ function init() {
   ezdac = p.newdefault(Math.random()*100+350, Math.random()*100+350, "ezdac~");
   gain.message("set", 100);
 
+
   var random_pos_range = 600;
 
-  createPercussions(total_percussions);
+  // createPercussions(total_percussions);
   createOscillators(total_oscillators);
-  // create bass percussion
-  // var random_pos_range = 600; for (var i = 0; i < total_buttons; i++) {
-  //   bass_btn = p.newdefault(300, 440, "button");
-  //   bass_btn.varname = "bass_btn_" + i;
-  //   bass_btn.message("bgcolor", 0., 0.5, 1., 1.);
-  //   bass_fnctn = p.newdefault(Math.random()*random_pos_range-100, Math.random()*random_pos_range-100, "function");
-  //   bass_fnctn.message("bgcolor", 0., 0., 0., 0.);
-  //   bass_fnctn.message("linecolor", 0., 0.5, 1., 1.);
-  //   bass_fnctn.message("domain", 5000);
-  //   // bass function values
-  //   bass_fnctn.message("list", 0, 0);
-  //   bass_pnt1_x = Math.random() * 100 + 5;
-  //   bass_pnt1_y = Math.random()/2 + 0.5;
-  //   bass_fnctn.message("list", bass_pnt1_x, bass_pnt1_y);
-  //   bass_pnt2_x = Math.random() * 100 + 5;
-  //   bass_pnt2_y = Math.random()/2 + 0.5;
-  //   bass_fnctn.message("list", bass_pnt2_x, bass_pnt2_y);
-  //   bass_fnctn.message("list", 5000, 0);
-  //   bass_line = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "line~");
-  //   bass_mult = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "*~");
-  //   bass_noise = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "noise~");
-  //   bass_svf = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "svf~");
-  //   bass_svf_cutoff = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
-  //   bass_svf_resonance = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
-  //   bass_svf_cutoff.message("format", 6);
-  //   bass_svf_resonance.message("format", 6);
-  //   bass_svf_cutoff.varname = "float_cutoff_" + i;
-  //   bass_svf_resonance.varname = "float_resonance_" + i;
-  //   bass_svf_cutoff.message("float", Math.random()*1000+400);
-  //   bass_svf_resonance.message("float", Math.random()/2+0.5);
-  //   p.connect(bass_btn, 0, bass_fnctn, 0);
-  //   p.connect(bass_fnctn, 1, bass_line, 0);
-  //   p.connect(bass_line, 0, bass_mult, 1);
-  //   p.connect(bass_noise, 0, bass_svf, 0);
-  //   p.connect(bass_svf, 0, bass_mult, 0);
-  //   p.connect(bass_svf_resonance, 0, bass_svf, 2);
-  //   p.connect(bass_svf_cutoff, 0, bass_svf, 1);
-  //   p.connect(bass_mult, 0, gain, 0);
-  //   p.connect(gain, 0, ezdac, 0);
-  //   // push all buttons that activate sound
-  //   buttons_to_randomize.push(bass_btn);
-  // }
-
-
-  // randomize all things
   randomizeBtns();
-
-  // tsk_initfloats = new Task(initFloats, this);
-  // tsk_initfloats.schedule();
-  // tsk_initfloats.interval = 2000;
-  //
   dial_listener = new MaxobjListener(master_dial, valuechanged); // this is a MaxObjListener
-  //
-  // function initFloats() {
-  //   for (var i = 0; i < total_buttons; i++) {
-  //     obj_cutoff = this.patcher.getnamed("float_cutoff_" + i);
-  //     obj_resonance = this.patcher.getnamed("float_resonance_" + i);
-  //     obj_cutoff.message("float", Math.random()*1000+400);
-  //     obj_resonance.message("float", Math.random()/2+0.5);
-  //   }
-  // }
 }
 
 function createPercussions(total) {
@@ -276,6 +218,19 @@ function createOscillators(total) {
     p.connect(osc_metro_zl_mth, 0, osc_metro_float, 0);
     p.connect(osc_vexpr, 0, osc_metro_list, 1);
     p.connect(osc_metro_float, 0, osc_saw, 0);
+    // reverb
+    freeverbl = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "gen~ @gen freeverb");
+    freeverbr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "gen~ @gen freeverb");
+    freeverbl.message("fb1", 0.9);
+    freeverbl.message("fb2", 0.9);
+    freeverbr.message("fb1", 0.9);
+    freeverbr.message("fb2", 0.9);
+    freeverbr.message("damp", 0.6);
+    freeverbr.message("damp", 0.6);
+    p.connect(osc_biquad, 0, freeverbl, 0);
+    p.connect(osc_biquad, 0, freeverbr, 0);
+    p.connect(freeverbl, 0, osc_livegain, 0);
+    p.connect(freeverbr, 0, osc_livegain, 1);
     // push all buttons that activate sound
     oscs_to_randomize.push(osc_btn);
     // push all content that comes with osc object
