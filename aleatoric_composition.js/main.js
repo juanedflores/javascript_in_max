@@ -53,6 +53,7 @@ function init() {
   // createPercussions(total_percussions);
   for (var i = 0; i < 3; i++) {
     createOscillators(total_oscillators, i);
+    addOscillators(2); 
     randomizeBtns();
   }
 
@@ -335,7 +336,7 @@ function createOscillators(total, octave) {
     osc_euc_rotation_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 7");
     osc_euc_rotation_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 2");
     metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 500"); // metro random
-    metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1000");
+    metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 5000");
     metro_offset_number = p.newdefault(600, 660, "number");
     p.connect(osc_btn, 0, adsr_release_random, 0);
     p.connect(osc_btn, 0, osc_euc_steps_random, 0);
@@ -352,6 +353,7 @@ function createOscillators(total, octave) {
     p.connect(osc_euc_rotation_offset, 0, osc_euc_rotation, 0);
     p.connect(metro_random, 0, metro_offset, 0);
     p.connect(metro_offset, 0, osc_metro_speed, 0);
+    p.connect(metro_offset_number, 0, metro_offset, 1);
 
     // push all buttons that activate sound
     oscs_to_randomize.push(osc_btn);
