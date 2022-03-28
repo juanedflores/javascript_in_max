@@ -52,8 +52,8 @@ function init() {
 
   // createPercussions(total_percussions);
   for (var i = 0; i < 3; i++) {
-    createOscillators(total_oscillators, i);
-    addOscillators(2); 
+    createOscillators(total_oscillators, i, (i+1)*10000+500);
+    addOscillators(6); 
     randomizeBtns();
   }
 
@@ -120,7 +120,7 @@ function createPercussions(total) {
   }
 }
 
-function createOscillators(total, octave) {
+function createOscillators(total, octave, release) {
   var random_metro_range = Math.round(Math.random()*20);
   var osc_adsr_length = Math.round(5000);
   // create oscillators
@@ -398,7 +398,7 @@ function createOscillators(total, octave) {
     osc_adsr_attack.message("float", 1400.);
     osc_adsr_decay.message("float", 500.);
     osc_adsr_sustain.message("float", 0.5);
-    osc_adsr_release.message("float", 40000);
+    osc_adsr_release.message("float", release);
     osc_euc_steps.message("int", 5);
     osc_euc_hits.message("int", 2);
     osc_euc_rotation.message("int", 0);
@@ -459,7 +459,7 @@ function setTotalPercussions(new_total) {
 
 
 function createNewOsc(num, octave) {
-  createOscillators(num, octave);
+  createOscillators(num, octave, 40000);
   randomizeBtns();
 }
 
