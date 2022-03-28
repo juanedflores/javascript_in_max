@@ -1,1 +1,1 @@
-<img src="./aleatoric_composition1.png" alt="preview" width="800"/>
+<img src="./aleatoric_composition_1.png" alt="preview" width="800"/>
