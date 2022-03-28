@@ -26,6 +26,9 @@ function init() {
   master_dial.message("degrees", 360);
   master_dial.message("size", 1000);
   master_dial.message("mode", 4);
+  master_dial.message("bgcolor", 0.133, 0.137, 0.165, 1.000);
+  master_dial.message("needlecolor", 0.902 ,0.910 ,0.808 ,1.000);
+  master_dial.message("outlinecolor", 0.792 ,0.957 ,1.000 ,1.000);
   master_dial.background = true;
   master_clock = p.newdefault(300, 339, "metro", master_clock_ms);
   master_clock.varname = "master_clock";
@@ -57,7 +60,8 @@ function createPercussions(total) {
   for (var i = 0; i < total; i++) {
     bass_btn = p.newdefault(300, 440, "button");
     bass_btn.varname = "bass_btn_"+i;
-    bass_btn.message("bgcolor", 0., 0.5, 1., 1.);
+    // bass_btn.message("bgcolor", 0., 0.5, 1., 1.);
+    bass_btn.message("bgcolor", 1.000 ,1.000 ,0.722 ,1.000);
     bass_fnctn = p.newdefault(Math.random()*random_pos_range-100, Math.random()*random_pos_range-100, "function");
     bass_fnctn.message("bgcolor", 0., 0., 0., 0.);
     bass_fnctn.message("linecolor", 0., 0.5, 1., 1.);
@@ -123,7 +127,8 @@ function createOscillators(total, octave, release) {
     } else {
       osc_btn.varname = "osc_btn_" + oscs_to_randomize.length;
     }
-    osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
+    // osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
+    osc_btn.message("bgcolor", 1.000 ,1.000 ,0.722 ,1.000);
     osc_delay = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "delay", 100);
     osc_msg_0 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
     osc_msg_1 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
@@ -316,8 +321,8 @@ function createOscillators(total, octave, release) {
     // create random parameters
     osc_euc_rotation_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 7");
     osc_euc_rotation_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 2");
-    metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 500"); // metro random
-    metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 5000");
+    metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random " + 4000/(octave+1)); // metro random
+    metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 100");
     metro_offset_number = p.newdefault(600, 660, "number");
     p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
     p.connect(osc_btn, 0, metro_random, 0);
@@ -373,7 +378,7 @@ function createOscillators(total, octave, release) {
     osc_adsr_sustain.message("float", 0.5);
     osc_adsr_release.message("float", release);
     osc_euc_steps.message("int", 5);
-    osc_euc_hits.message("int", 2);
+    osc_euc_hits.message("int", 3);
     osc_euc_rotation.message("int", 0);
   }
 }
@@ -441,7 +446,9 @@ function addOscillators(to_add) {
     var theta = Math.random()*6.28;
     osc_btn = p.newdefault(Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
     osc_btn.varname = "osc_btn_" + i;
-    osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
+    // osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
+    osc_btn.message("bgcolor", 1.000 ,1.000 ,0.722 ,1.000);
+
     p.connect(osc_btn, 0, osc_delay, 0);
     p.connect(osc_btn, 0, osc_msg_1, 0);
     p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
