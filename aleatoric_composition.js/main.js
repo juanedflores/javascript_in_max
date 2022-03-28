@@ -43,16 +43,19 @@ function init() {
   p.connect(master_toggle, 0, master_clock, 0);
   
   // master gain
-  gain = p.newdefault(Math.random()*100+350, Math.random()*100+350, "gain~");
+  // gain = p.newdefault(Math.random()*100+350, Math.random()*100+350, "gain~");
   ezdac = p.newdefault(Math.random()*100+350, Math.random()*100+350, "ezdac~");
-  gain.message("set", 100);
+  // gain.message("set", 100);
 
 
   var random_pos_range = 600;
 
   // createPercussions(total_percussions);
-  createOscillators(total_oscillators);
-  randomizeBtns();
+  for (var i = 0; i < 3; i++) {
+    createOscillators(total_oscillators, i);
+    randomizeBtns();
+  }
+
   dial_listener = new MaxobjListener(master_dial, valuechanged); // this is a MaxObjListener
 }
 
@@ -116,22 +119,28 @@ function createPercussions(total) {
   }
 }
 
-function createOscillators(total) {
+function createOscillators(total, octave) {
+  var random_metro_range = Math.round(Math.random()*20);
+  var osc_adsr_length = Math.round(5000);
   // create oscillators
   for (var i = 0; i < total; i++) {
     osc_btn = p.newdefault(300, 440, "button");
-    osc_btn.varname = "osc_btn_" + i;
+    if (oscs_to_randomize == null) {
+      osc_btn.varname = "osc_btn_" + 0;
+    } else {
+      osc_btn.varname = "osc_btn_" + oscs_to_randomize.length;
+    }
     osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
     osc_delay = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "delay", 100);
     osc_msg_0 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
-    osc_msg_0.set(0);
     osc_msg_1 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
+    osc_msg_0.set(0);
     osc_msg_1.set(1);
     p.connect(osc_btn, 0, osc_delay, 0);
     p.connect(osc_delay, 0, osc_msg_0, 0);
     p.connect(osc_btn, 0, osc_msg_1, 0);
     osc_adsr_toggle = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "toggle");
-    osc_adsr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "adsr~", 50., 50., 0.5, 40000.);
+    osc_adsr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "adsr~", 50., 50., 0.5, osc_adsr_length); // var
     p.connect(osc_adsr_toggle, 0, osc_adsr, 0);
     osc_adsr_attack = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number", 50.);
     osc_adsr_decay = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number", 50.);
@@ -155,9 +164,8 @@ function createOscillators(total) {
     p.connect(osc_adsr, 0, osc_mult_gain, 1);
     osc_biquad = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "biquad~");
     osc_livegain = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "live.gain~");
-
     osc_livegain.message("set", -10);
-    p.connect(osc_biquad, 0, osc_livegain, 0);
+    // p.connect(osc_biquad, 0, osc_livegain, 0);
     p.connect(osc_biquad, 0, osc_livegain, 1);
     p.connect(osc_livegain, 0, ezdac, 0);
     p.connect(osc_livegain, 1, ezdac, 1);
@@ -166,6 +174,7 @@ function createOscillators(total) {
     osc_filtergraph.message("edit_freq", 189.289642);
     osc_filtergraph.message("edit_amp", 6.18);
     osc_filtergraph.message("edit_Q", 0.7);
+    osc_filtergraph.message("bgcolor", 0.0, 0.0, 0.0, 0.0);
     p.connect(osc_filtergraph, 0, osc_biquad, 0);
     p.connect(osc_mult_gain, 0, osc_biquad, 0);
     p.connect(osc_msg_0, 0, osc_adsr, 0);
@@ -182,10 +191,11 @@ function createOscillators(total) {
     p.connect(osc_euc_hits, 0, osc_pak, 1);
     p.connect(osc_euc_rotation, 0, osc_pak, 2);
     p.connect(osc_pak, 0, osc_euclidean_list, 0);
-    osc_listfunnel = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "listfunnel", Math.floor(Math.random()*40)+30);
+    // mult_factor = Math.ceil(Math.random()*3) * 12 + 16;
+    osc_listfunnel = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "listfunnel", 16 + (octave * 12)); // hard coded to 40
     osc_if = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "if $i2 == 1 then $i1");
     osc_zl_group = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "zl group");
-    osc_vexpr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "vexpr " + (Math.floor(Math.random()*10) + 2) + "* pow(2, ($f1/$f2)) @scalarmode 1");
+    osc_vexpr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "vexpr " + 11 + "* pow(2, ($f1/$f2)) @scalarmode 1");
     p.connect(osc_euclidean_list, 0, osc_listfunnel, 0);
     p.connect(osc_listfunnel, 0, osc_if, 0);
     p.connect(osc_if, 0, osc_zl_group, 0);
@@ -193,9 +203,8 @@ function createOscillators(total) {
     p.connect(osc_zl_group, 0, osc_vexpr, 0);
     p.connect(osc_euc_steps, 0, osc_vexpr, 1);
     osc_metro_toggle = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "toggle");
-    osc_metro_speed = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
-    // osc_metro = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "metro", (Math.random()*100)+40); // math.random() by itself sounded glitchy and noisy
-    osc_metro = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "metro", Math.random()); // math.random() by itself sounded glitchy and noisy
+    osc_metro_speed = p.newdefault(600, 600, "number");
+    osc_metro = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "metro", random_metro_range); // math.random() by itself sounded glitchy and noisy
     osc_metro.message("active", 1);
     osc_minus_one = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "-", 1);
     osc_metro_counter = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "counter", 0, 8);
@@ -212,12 +221,97 @@ function createOscillators(total) {
     osc_metro_float = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
     osc_metro_float.message("format", 6);
     p.connect(osc_metro_counter, 0, osc_metro_trigger, 0);
-    p.connect(osc_metro_trigger, 0, osc_metro_list, 0);
+    // p.connect(osc_metro_trigger, 0, osc_metro_list, 0);
     p.connect(osc_metro_trigger, 1, osc_metro_zl_mth, 1);
     p.connect(osc_metro_list, 0, osc_metro_zl_mth, 0);
     p.connect(osc_metro_zl_mth, 0, osc_metro_float, 0);
     p.connect(osc_vexpr, 0, osc_metro_list, 1);
     p.connect(osc_metro_float, 0, osc_saw, 0);
+    // adding second oscillator
+    osc_trigger_list = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
+    osc_zl_mth_2 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "zl mth");
+    p.connect(osc_metro_trigger, 0, osc_trigger_list, 0);
+    p.connect(osc_vexpr, 0, osc_trigger_list, 1);
+    p.connect(osc_trigger_list, 0, osc_zl_mth_2, 0);
+    p.connect(osc_metro_trigger, 1, osc_zl_mth_2, 1);
+    osc_2_mth_number = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
+    osc_2_mth_number.message("format", 6);
+    p.connect(osc_zl_mth_2, 0, osc_2_mth_number, 0);
+    osc_2_counter = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "counter");
+    osc_2_message = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
+    osc_2_message_mth = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "zl mth");
+    p.connect(osc_2_mth_number, 0, osc_2_counter, 0);
+    p.connect(osc_euc_steps, 0, osc_2_counter, 4);
+    p.connect(osc_2_counter, 0, osc_2_message, 0);
+    p.connect(osc_euclidean_list, 0, osc_2_message, 0);
+    p.connect(osc_euclidean_list, 0, osc_2_message, 1);
+    osc_2_mth_3 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "zl mth");
+    p.connect(osc_2_message, 0, osc_2_mth_3, 0);
+    p.connect(osc_2_counter, 0, osc_2_mth_3, 1);
+    osc_2_if_1 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "if $i1 == 1 then bang");
+    osc_2_if_0 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "if $i1 == 0 then bang");
+    p.connect(osc_2_mth_3, 0, osc_2_if_1, 0);
+    p.connect(osc_2_mth_3, 0, osc_2_if_0, 0);
+    osc_2_if_1_bang = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "button");
+    osc_2_if_0_bang = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "button");
+    p.connect(osc_2_if_1, 0, osc_2_if_1_bang ,0);
+    p.connect(osc_2_if_0, 0, osc_2_if_0_bang, 0);
+    osc_2_if_0_message = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
+    osc_2_if_1_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 3"); // might need to init this
+    osc_2_if_1_random_plus = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1");
+    osc_2_if_1_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "/ 20.");
+    p.connect(osc_2_if_1_bang, 0, osc_metro_list ,0);
+    p.connect(osc_2_if_1_bang, 0, osc_2_if_1_random, 0);
+    p.connect(osc_2_if_1_random, 0, osc_2_if_1_random_plus, 0);
+    p.connect(osc_metro_zl_mth, 0, osc_2_if_1_random_div, 0);
+    p.connect(osc_2_if_1_random_plus, 0, osc_2_if_1_random_div, 1);
+    p.connect(osc_2_if_0_bang, 0, osc_2_if_0_message, 0);
+    p.connect(osc_vexpr, 0, osc_2_if_0_message, 1);
+    osc_2_mth_4 = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "zl mth");
+    p.connect(osc_2_if_0_message, 0, osc_2_mth_4, 0);
+    p.connect(osc_metro_trigger, 0, osc_2_mth_4, 1);
+    osc_2_mth_4_float = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
+    osc_2_mth_4_float.message("format", 6);
+    p.connect(osc_2_mth_4, 0, osc_2_mth_4_float, 0);
+    osc_2_if_0_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 3");
+    p.connect(osc_2_if_0_bang, 0, osc_2_if_0_random, 0);
+    osc_2_if_0_random_plus = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1");
+    osc_2_if_0_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "/ 20.");
+    p.connect(osc_2_if_0_random, 0, osc_2_if_0_random_plus, 0);
+    p.connect(osc_2_mth_4_float, 0, osc_2_if_0_random_div, 0);
+    p.connect(osc_2_if_0_random_plus, 0, osc_2_if_0_random_div, 1);
+    osc_2_if_0_float = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
+    osc_2_if_0_float.message("format", 6);
+    p.connect(osc_2_if_0_random_div, 0, osc_2_if_0_float, 0);
+    osc_2_if_0_saw = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "saw~");
+    p.connect(osc_2_if_0_float, 0, osc_2_if_0_saw, 0);
+    osc_2_if_0_saw_mult = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "*~");
+    p.connect(osc_2_if_0_saw, 0, osc_2_if_0_saw_mult, 0);
+    p.connect(osc_adsr, 0, osc_2_if_0_saw_mult, 1);
+
+    osc_2_biquad = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "biquad~");
+    p.connect(osc_2_biquad, 0, osc_livegain, 0);
+
+    osc_2_filtergraph = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "filtergraph~");
+    osc_2_filtergraph.message("edit_mode", 1);
+    osc_2_filtergraph.message("edit_freq", 189.289642);
+    osc_2_filtergraph.message("edit_amp", 6.18);
+    osc_2_filtergraph.message("edit_Q", 0.7);
+    osc_2_filtergraph.message("bgcolor", 0.0, 0.0, 0.0, 0.0);
+    p.connect(osc_2_filtergraph, 0, osc_2_biquad, 0);
+    p.connect(osc_2_if_0_saw_mult, 0, osc_2_biquad, 0);
+    p.connect(osc_2_biquad, 0, osc_livegain, 0);
+
+    osc_2_times = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "* 10");
+    osc_2_times_counter = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "counter");
+    osc_2_times_button = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "button");
+    p.connect(osc_minus_one, 0, osc_2_times, 0);
+    p.connect(osc_2_times, 0, osc_2_times_counter, 4);
+    p.connect(osc_2_times_counter, 2, osc_2_times_button, 0);
+    p.connect(osc_2_times_button, 0, osc_euc_rotation_random, 0);
+    p.connect(osc_metro, 0, osc_2_times_counter, 0);
+
+
     // reverb
     freeverbl = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "gen~ @gen freeverb");
     freeverbr = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "gen~ @gen freeverb");
@@ -227,10 +321,38 @@ function createOscillators(total) {
     freeverbr.message("fb2", 0.9);
     freeverbr.message("damp", 0.6);
     freeverbr.message("damp", 0.6);
-    p.connect(osc_biquad, 0, freeverbl, 0);
+    p.connect(osc_2_biquad, 0, freeverbl, 0);
     p.connect(osc_biquad, 0, freeverbr, 0);
     p.connect(freeverbl, 0, osc_livegain, 0);
     p.connect(freeverbr, 0, osc_livegain, 1);
+    // create random parameters
+    // adsr_release_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 50000");
+    // adsr_release_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 300");
+    // osc_euc_steps_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 11");
+    // osc_euc_steps_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 5");
+    // osc_euc_hits_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 5");
+    // osc_euc_hits_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 2");
+    osc_euc_rotation_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 7");
+    osc_euc_rotation_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 2");
+    metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 500"); // metro random
+    metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1000");
+    metro_offset_number = p.newdefault(600, 660, "number");
+    p.connect(osc_btn, 0, adsr_release_random, 0);
+    p.connect(osc_btn, 0, osc_euc_steps_random, 0);
+    p.connect(osc_btn, 0, osc_euc_hits_random, 0);
+    p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
+    p.connect(osc_btn, 0, metro_random, 0);
+    // p.connect(adsr_release_random, 0, adsr_release_offset, 0);
+    // p.connect(adsr_release_offset, 0, osc_adsr_release, 0);
+    // p.connect(osc_euc_steps_random, 0, osc_euc_steps_offset, 0);
+    // p.connect(osc_euc_steps_offset, 0, osc_euc_steps, 0);
+    // p.connect(osc_euc_hits_random, 0, osc_euc_hits_offset, 0);
+    // p.connect(osc_euc_hits_offset, 0, osc_euc_hits, 0);
+    p.connect(osc_euc_rotation_random, 0, osc_euc_rotation_offset, 0);
+    p.connect(osc_euc_rotation_offset, 0, osc_euc_rotation, 0);
+    p.connect(metro_random, 0, metro_offset, 0);
+    p.connect(metro_offset, 0, osc_metro_speed, 0);
+
     // push all buttons that activate sound
     oscs_to_randomize.push(osc_btn);
     // push all content that comes with osc object
@@ -267,15 +389,17 @@ function createOscillators(total) {
     oscs_content.push(osc_metro_zl_mth);
     oscs_content.push(osc_metro_float);
     oscs_content.push(osc_metro_float);
+    oscs_content.push(freeverbl);
+    oscs_content.push(freeverbr);
 
     // init all numbers
-    osc_adsr_attack.message("float", 50.);
-    osc_adsr_decay.message("float", 50.);
+    osc_adsr_attack.message("float", 1400.);
+    osc_adsr_decay.message("float", 500.);
     osc_adsr_sustain.message("float", 0.5);
-    osc_adsr_release.message("float", 20000);
-    osc_euc_steps.message("int", 8);
-    osc_euc_hits.message("int", 3);
-    osc_euc_rotation.message("int", Math.floor(Math.random()*8));
+    osc_adsr_release.message("float", 40000);
+    osc_euc_steps.message("int", 5);
+    osc_euc_hits.message("int", 2);
+    osc_euc_rotation.message("int", 0);
   }
 }
 
@@ -283,14 +407,18 @@ function valuechanged(data) {
   for (var i = 0; i < percussions_to_randomize.length-2; i++) {
     obj = p.getnamed("bass_btn_" + i);
     pos = obj.getattr("patching_position");
-    if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.006 ){
+    if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.1 ){
       obj.message("1");
     }
   }
-  for (var i = 0; i < oscs_to_randomize.length-2; i++) {
+  // post(oscs_to_randomize.length);
+  // if (oscs_to_randomize.length == 1) {
+  //   oscs_total = 2;
+  // }
+  for (var i = 0; i < oscs_to_randomize.length; i++) {
     obj = p.getnamed("osc_btn_" + i);
     pos = obj.getattr("patching_position");
-    if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.006 ){
+    if (Math.abs(scale(data.value, 0, 1000, 0, 6.28) - ((Math.atan2(pos[1]-350, pos[0]-350) + 3.14) + 3.14/2) % 6.28) < 0.01){
       obj.message("1");
     }
   }
@@ -327,20 +455,45 @@ function setTotalPercussions(new_total) {
   }
 }
 
-function setTotalOscillators(new_total) {
-  for (var osc in oscs_to_randomize) {
-    p.remove(oscs_to_randomize[osc]);
-  }
-  for (var osc in oscs_content) {
-    p.remove(oscs_content[osc]);
-  }
 
-  createOscillators(new_total);
-  
-  for (var obj in oscs_to_randomize) {
+function createNewOsc(num, octave) {
+  createOscillators(num, octave);
+  randomizeBtns();
+}
+
+function addOscillators(to_add) {
+  // for (var osc in oscs_to_randomize) {
+  //   p.remove(oscs_to_randomize[osc]);
+  // }
+  post(oscs_to_randomize.length +" length ");
+  post(oscs_to_randomize.length+to_add +" toadd ");
+  var osc_array_length = oscs_to_randomize.length;
+  var osc_to_add = oscs_to_randomize.length+to_add;
+  for (var i = osc_array_length; i < osc_to_add; i++) {
     var theta = Math.random()*6.28;
-    oscs_to_randomize[obj].message("patching_position", Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
+    osc_btn = p.newdefault(Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
+    osc_btn.varname = "osc_btn_" + i;
+    osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
+    p.connect(osc_btn, 0, osc_delay, 0);
+    p.connect(osc_btn, 0, osc_msg_1, 0);
+    p.connect(osc_btn, 0, adsr_release_random, 0);
+    p.connect(osc_btn, 0, osc_euc_steps_random, 0);
+    p.connect(osc_btn, 0, osc_euc_hits_random, 0);
+    p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
+    p.connect(osc_btn, 0, metro_random, 0);
+    oscs_to_randomize.push(osc_btn);
   }
+  // for (var osc in oscs_content) {
+  //   p.remove(oscs_content[osc]);
+  // }
+
+  // total_oscillators = new_total;
+  // createOscillators(new_total);
+  
+  // for (var obj in oscs_to_randomize) {
+  //   var theta = Math.random()*6.28;
+  //   oscs_to_randomize[obj].message("patching_position", Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
+  // }
 }
 
 function reset()  {
