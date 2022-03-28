@@ -4,8 +4,8 @@ var p = this.patcher;
 
 var master_clock_ms = 33;
 
-tsk_init = new Task(reset, this);
-tsk_init.schedule();
+// tsk_init = new Task(reset, this);
+// tsk_init.schedule();
 tsk_init = new Task(init, this);
 tsk_init.schedule();
 // tsk_init = new Task(reset, this);
