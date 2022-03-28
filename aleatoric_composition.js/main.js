@@ -41,7 +41,7 @@ function init() {
   p.connect(master_clock, 0, clock_counter, 0);
   p.connect(clock_counter, 0, master_dial, 0);
   p.connect(master_toggle, 0, master_clock, 0);
-  
+
   // master gain
   // gain = p.newdefault(Math.random()*100+350, Math.random()*100+350, "gain~");
   ezdac = p.newdefault(Math.random()*100+350, Math.random()*100+350, "ezdac~");
@@ -53,7 +53,7 @@ function init() {
   // createPercussions(total_percussions);
   for (var i = 0; i < 3; i++) {
     createOscillators(total_oscillators, i, (i+1)*10000+500);
-    addOscillators(6); 
+    addOscillators(6);
     randomizeBtns();
   }
 
@@ -450,7 +450,7 @@ function setTotalPercussions(new_total) {
   }
 
   createPercussions(new_total);
-  
+
   for (var obj in percussions_to_randomize) {
     var theta = Math.random()*6.28;
     percussions_to_randomize[obj].message("patching_position", Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
@@ -491,7 +491,7 @@ function addOscillators(to_add) {
 
   // total_oscillators = new_total;
   // createOscillators(new_total);
-  
+
   // for (var obj in oscs_to_randomize) {
   //   var theta = Math.random()*6.28;
   //   oscs_to_randomize[obj].message("patching_position", Math.cos(theta)*262+350-12, Math.sin(theta)*262+350-12, "button");
