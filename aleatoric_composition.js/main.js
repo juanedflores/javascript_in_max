@@ -309,7 +309,6 @@ function createOscillators(total, octave) {
     p.connect(osc_minus_one, 0, osc_2_times, 0);
     p.connect(osc_2_times, 0, osc_2_times_counter, 4);
     p.connect(osc_2_times_counter, 2, osc_2_times_button, 0);
-    p.connect(osc_2_times_button, 0, osc_euc_rotation_random, 0);
     p.connect(osc_metro, 0, osc_2_times_counter, 0);
 
 
@@ -338,11 +337,12 @@ function createOscillators(total, octave) {
     metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 500"); // metro random
     metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 5000");
     metro_offset_number = p.newdefault(600, 660, "number");
-    p.connect(osc_btn, 0, adsr_release_random, 0);
-    p.connect(osc_btn, 0, osc_euc_steps_random, 0);
-    p.connect(osc_btn, 0, osc_euc_hits_random, 0);
+    // p.connect(osc_btn, 0, adsr_release_random, 0);
+    // p.connect(osc_btn, 0, osc_euc_steps_random, 0);
+    // p.connect(osc_btn, 0, osc_euc_hits_random, 0);
     p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
     p.connect(osc_btn, 0, metro_random, 0);
+    p.connect(osc_2_times_button, 0, osc_euc_rotation_random, 0);
     // p.connect(adsr_release_random, 0, adsr_release_offset, 0);
     // p.connect(adsr_release_offset, 0, osc_adsr_release, 0);
     // p.connect(osc_euc_steps_random, 0, osc_euc_steps_offset, 0);
@@ -478,9 +478,9 @@ function addOscillators(to_add) {
     osc_btn.message("bgcolor", 0.5, 0.5, 0., 1.);
     p.connect(osc_btn, 0, osc_delay, 0);
     p.connect(osc_btn, 0, osc_msg_1, 0);
-    p.connect(osc_btn, 0, adsr_release_random, 0);
-    p.connect(osc_btn, 0, osc_euc_steps_random, 0);
-    p.connect(osc_btn, 0, osc_euc_hits_random, 0);
+    // p.connect(osc_btn, 0, adsr_release_random, 0);
+    // p.connect(osc_btn, 0, osc_euc_steps_random, 0);
+    // p.connect(osc_btn, 0, osc_euc_hits_random, 0);
     p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
     p.connect(osc_btn, 0, metro_random, 0);
     oscs_to_randomize.push(osc_btn);
