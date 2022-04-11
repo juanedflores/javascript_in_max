@@ -16,9 +16,6 @@ function convert_patch_to_js() {
       post(objs[i].maxclass + ": skipped");
       continue;
     }
-    post("dict " + obj_dictionary + "\n");
-    post("object: " + object_name);
-    post("\n");
 
     var obj_dictionary = {};
     obj_dictionary.index = i;
@@ -28,14 +25,11 @@ function convert_patch_to_js() {
     var obj_inlets = {};
     inputs_length = objs[i].patchcords['inputs'].length;
     for(var j = 0; j < inputs_length; j++) {
-      post(objs[i].patchcords['inputs'][j].dstinlet);
-      post(", ");
       obj_inlet_connections = {};
       obj_inlet_connections["inlet"] = objs[i].patchcords['inputs'][j].dstinlet;
       obj_inlet_connections["connected_obj"] = objs[i].patchcords['inputs'][j].srcobject;
       obj_inlet_connections["connected_obj_name"] = objs[i].patchcords['inputs'][j].srcobject.maxclass;
       obj_inlet_connections["connected_obj_outlet"] = objs[i].patchcords['inputs'][j].srcoutlet;
-      post("CONNECT WITH: " + objs[i].patchcords['inputs'][j].srcobject.maxclass);
       obj_inlets[j] = obj_inlet_connections;
     }
     post("\n\n");
