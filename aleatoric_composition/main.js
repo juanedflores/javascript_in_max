@@ -26,9 +26,9 @@ function init() {
   master_dial.message("degrees", 360);
   master_dial.message("size", 1000);
   master_dial.message("mode", 4);
-  master_dial.message("bgcolor", 0.133, 0.137, 0.165, 1.000);
+  master_dial.message("bgcolor", 0.239, 0.227, 0.200, 1.000);
   master_dial.message("needlecolor", 0.902 ,0.910 ,0.808 ,1.000);
-  master_dial.message("outlinecolor", 0.792 ,0.957 ,1.000 ,1.000);
+  master_dial.message("outlinecolor", 0.792 ,1.000 ,0.796 ,1.000);
   master_dial.background = true;
   master_clock = p.newdefault(300, 339, "metro", master_clock_ms);
   master_clock.varname = "master_clock";
@@ -47,7 +47,7 @@ function init() {
   // createPercussions(total_percussions);
   for (var i = 0; i < 3; i++) {
     createOscillators(total_oscillators, i, (i+1)*10000+500);
-    addOscillators(6);
+    addOscillators(5);
     randomizeBtns();
   }
 
@@ -252,9 +252,9 @@ function createOscillators(total, octave, release) {
     p.connect(osc_2_if_1, 0, osc_2_if_1_bang ,0);
     p.connect(osc_2_if_0, 0, osc_2_if_0_bang, 0);
     osc_2_if_0_message = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "message");
-    osc_2_if_1_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 3"); // might need to init this
+    osc_2_if_1_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 4"); // might need to init this
     osc_2_if_1_random_plus = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1");
-    osc_2_if_1_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "/ 20.");
+    osc_2_if_1_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "* " + (Math.random()*1000)+1);
     p.connect(osc_2_if_1_bang, 0, osc_metro_list ,0);
     p.connect(osc_2_if_1_bang, 0, osc_2_if_1_random, 0);
     p.connect(osc_2_if_1_random, 0, osc_2_if_1_random_plus, 0);
@@ -268,13 +268,18 @@ function createOscillators(total, octave, release) {
     osc_2_mth_4_float = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
     osc_2_mth_4_float.message("format", 6);
     p.connect(osc_2_mth_4, 0, osc_2_mth_4_float, 0);
-    osc_2_if_0_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 3");
+    osc_2_if_0_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 4");
     p.connect(osc_2_if_0_bang, 0, osc_2_if_0_random, 0);
     osc_2_if_0_random_plus = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 1");
-    osc_2_if_0_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "/ 20.");
+    osc_2_if_0_random_div = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "* " + (Math.random()*1000)+1);
+    // osc_2_if_0_random_plus_number = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
+    // osc_2_if_0_random_plus_number_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 1000");
     p.connect(osc_2_if_0_random, 0, osc_2_if_0_random_plus, 0);
     p.connect(osc_2_mth_4_float, 0, osc_2_if_0_random_div, 0);
+    // p.connect(osc_2_if_0_random_plus_number_random, 0, osc_2_if_0_random_plus_number, 0);
+    // p.connect(osc_2_if_0_random_plus_number, 0, osc_2_if_0_random_plus, 1);
     p.connect(osc_2_if_0_random_plus, 0, osc_2_if_0_random_div, 1);
+    // p.connect(osc_2_times_button, 0, osc_2_if_0_random_plus_number_random, 0);
     osc_2_if_0_float = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "number");
     osc_2_if_0_float.message("format", 6);
     p.connect(osc_2_if_0_random_div, 0, osc_2_if_0_float, 0);
@@ -321,9 +326,10 @@ function createOscillators(total, octave, release) {
     // create random parameters
     osc_euc_rotation_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random 7");
     osc_euc_rotation_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 2");
-    metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random " + 4000/(octave+1)); // metro random
+    metro_random = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "random " + 3000/(octave+1)); // metro random
     metro_offset = p.newdefault(Math.random()*random_pos_range, Math.random()*random_pos_range, "+ 100");
     metro_offset_number = p.newdefault(600, 660, "number");
+    metro_random_number = p.newdefault(600, 660, "number");
     p.connect(osc_btn, 0, osc_euc_rotation_random, 0);
     p.connect(osc_btn, 0, metro_random, 0);
     p.connect(osc_2_times_button, 0, osc_euc_rotation_random, 0);
@@ -332,6 +338,7 @@ function createOscillators(total, octave, release) {
     p.connect(metro_random, 0, metro_offset, 0);
     p.connect(metro_offset, 0, osc_metro_speed, 0);
     p.connect(metro_offset_number, 0, metro_offset, 1);
+    p.connect(metro_random_number, 0, metro_random, 1);
 
     // push all buttons that activate sound
     oscs_to_randomize.push(osc_btn);
