@@ -13,7 +13,7 @@ function convert_patch_to_js() {
   for (var i = 0; i < objs.length; i++) {
     // ignore any object that has 'ignore' as its varname
     if (objs[i].varname.indexOf('ignore') > -1) {
-      post(objs[i].maxclass + ": skipped");
+      post(objs[i].maxclass + ": skipped\n");
       continue;
     }
 
@@ -32,7 +32,6 @@ function convert_patch_to_js() {
       obj_inlet_connections["connected_obj_outlet"] = objs[i].patchcords['inputs'][j].srcoutlet;
       obj_inlets[j] = obj_inlet_connections;
     }
-    post("\n\n");
     obj_dictionary.inlets = obj_inlets;
     obj_dictionaries.push(obj_dictionary);
   }
