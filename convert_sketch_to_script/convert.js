@@ -14,8 +14,24 @@ function check_io(curr_Max_Obj, looking_for_output){
   }
 
   if (!inQueue) {
+
+
     // create new obj
-    new_obj = p.newdefault(curr_Max_Obj.rect[0]-300, curr_Max_Obj.rect[1], curr_Max_Obj.maxclass);
+    if (curr_Max_Obj.maxclass == "times~") {
+      new_obj = p.newdefault(curr_Max_Obj.rect[0]-300, curr_Max_Obj.rect[1], curr_Max_Obj.maxclass +" 0.5");
+    } else {
+      new_obj = p.newdefault(curr_Max_Obj.rect[0]-300, curr_Max_Obj.rect[1], curr_Max_Obj.maxclass);
+    }
+
+    // get attributes
+    properties = curr_Max_Obj.getattrnames();
+    for (var i = 0; i < properties.length; i++) {
+      if (properties[i] == "frequency") {
+	property = curr_Max_Obj.getattr(properties[i]);
+	new_obj.setattr(String(properties[i]), property);
+      }
+    }
+
     // push to queue
     queue.push(new_obj);
     post("QUEUE:");
