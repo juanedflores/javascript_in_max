@@ -61,11 +61,11 @@ function check_io(curr_Max_Obj, looking_for_output, last_obj){
       input_src_obj = curr_Max_Obj.patchcords['inputs'][i].srcobject;
       input_src_outlet = curr_Max_Obj.patchcords['inputs'][i].srcoutlet;
       input_dst_inlet = curr_Max_Obj.patchcords['inputs'][i].dstinlet;
-      visited = check_io(input_src_obj, 1, new_obj);
+      visited = check_io(input_src_obj, new_obj);
  //      if (queue.length < 2) {
 	// continue;	
  //      }
-      if (visited == 1 && !looking_for_output) {
+      if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
 	  if (total_objs[j].rect[1] == input_src_obj.rect[1] && total_objs[j].rect[0]+300 == input_src_obj.rect[0]) {
 	    object_to_connect = total_objs[j];
@@ -80,8 +80,8 @@ function check_io(curr_Max_Obj, looking_for_output, last_obj){
       output_dst_obj = curr_Max_Obj.patchcords['outputs'][i].dstobject;
       output_src_outlet = curr_Max_Obj.patchcords['outputs'][i].srcoutlet;
       output_dst_inlet = curr_Max_Obj.patchcords['outputs'][i].dstinlet;
-      visited = check_io(output_dst_obj, 0, new_obj);
-      if (visited == 1 && looking_for_output) {
+      visited = check_io(output_dst_obj, new_obj);
+      if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
 	  if (total_objs[j].rect[1] == output_dst_obj.rect[1] && total_objs[j].rect[0]+300 == output_dst_obj.rect[0]) {
 	    object_to_connect = total_objs[j];
