@@ -9,7 +9,7 @@ function check_io(curr_Max_Obj, last_obj){
   var inQueue = false;
   // check if object is already in the queue
   for (var j = 0; j < total_objs.length; j++) {
-    if (curr_Max_Obj.rect[1] == total_objs[j].rect[1] && curr_Max_Obj.rect[0]-300 == total_objs[j].rect[0]) {
+    if (curr_Max_Obj.rect[1] == total_objs[j].rect[1] && curr_Max_Obj.rect[0]-300 == total_objs[j].rect[0]) {
       inQueue = true;
       break;
     }
