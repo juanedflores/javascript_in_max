@@ -39,6 +39,7 @@ function check_io(curr_Max_Obj, last_obj){
       input_src_obj = curr_Max_Obj.patchcords['inputs'][i].srcobject;
       input_src_outlet = curr_Max_Obj.patchcords['inputs'][i].srcoutlet;
       input_dst_inlet = curr_Max_Obj.patchcords['inputs'][i].dstinlet;
+      // recursion
       visited = check_io(input_src_obj, new_obj);
       if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
@@ -55,6 +56,7 @@ function check_io(curr_Max_Obj, last_obj){
       output_dst_obj = curr_Max_Obj.patchcords['outputs'][i].dstobject;
       output_src_outlet = curr_Max_Obj.patchcords['outputs'][i].srcoutlet;
       output_dst_inlet = curr_Max_Obj.patchcords['outputs'][i].dstinlet;
+      // recursion
       visited = check_io(output_dst_obj, new_obj);
       if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
