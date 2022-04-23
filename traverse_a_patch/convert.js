@@ -1,18 +1,3 @@
-autowatch = 1;
-
-var p = this.patcher;
-var queue;
-var total_objs;
-
-function check_io(curr_Max_Obj, last_obj){
-  post("CHECKING: " + curr_Max_Obj.maxclass + "\n");
-  var inQueue = false;
-  // check if object is already in the queue
-  for (var j = 0; j < total_objs.length; j++) {
-    if (curr_Max_Obj.rect[1] == total_objs[j].rect[1] && curr_Max_Obj.rect[0]-300 == total_objs[j].rect[0]) {
-      inQueue = true;
-      break;
-    }
   }
 
   // TODO: Is this necessary?
@@ -39,7 +24,6 @@ function check_io(curr_Max_Obj, last_obj){
       input_src_obj = curr_Max_Obj.patchcords['inputs'][i].srcobject;
       input_src_outlet = curr_Max_Obj.patchcords['inputs'][i].srcoutlet;
       input_dst_inlet = curr_Max_Obj.patchcords['inputs'][i].dstinlet;
-      // recursion
       visited = check_io(input_src_obj, new_obj);
       if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
@@ -56,7 +40,6 @@ function check_io(curr_Max_Obj, last_obj){
       output_dst_obj = curr_Max_Obj.patchcords['outputs'][i].dstobject;
       output_src_outlet = curr_Max_Obj.patchcords['outputs'][i].srcoutlet;
       output_dst_inlet = curr_Max_Obj.patchcords['outputs'][i].dstinlet;
-      // recursion
       visited = check_io(output_dst_obj, new_obj);
       if (visited == 1) {
 	for (var j = 0; j < total_objs.length; j++) {
