@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 2,
-			"revision" : 1,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 62.0, 1455.0, 984.0 ],
+		"rect" : [ 0.0, 60.0, 1110.0, 922.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,13 +40,90 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"bgcolor2" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"bgfillcolor_angle" : 270.0,
+					"bgfillcolor_autogradient" : 0.0,
+					"bgfillcolor_color" : [ 1, 1, 1, 1 ],
+					"bgfillcolor_color1" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"bgfillcolor_color2" : [ 0.2, 0.2, 0.2, 1.0 ],
+					"bgfillcolor_proportion" : 0.5,
+					"bgfillcolor_type" : "color",
+					"gradient" : 1,
+					"id" : "obj-8",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1019.0, 495.0, 29.5, 22.0 ],
+					"text" : "1",
+					"varname" : "trigger"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"color" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 5,
+					"numoutlets" : 4,
+					"outlettype" : [ "signal", "signal", "", "" ],
+					"patching_rect" : [ 1019.0, 529.0, 61.0, 22.0 ],
+					"text" : "adsr~"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"color" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"id" : "obj-50",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 952.0, 572.0, 43.0, 22.0 ],
+					"text" : "cycle~"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"color" : [ 255.0, 0.0, 0.0, 1.0 ],
+					"id" : "obj-49",
+					"maxclass" : "ezdac~",
+					"numinlets" : 2,
+					"numoutlets" : 0,
+					"patching_rect" : [ 951.0, 648.0, 45.0, 45.0 ],
+					"varname" : "output"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"color" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"id" : "obj-46",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 753.0, 606.0, 40.0, 22.0 ],
+					"text" : "*~ 0.5"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-503",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1264.0, 686.0, 57.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "stopTime",
 					"varname" : "ignore[3]"
 				}
@@ -60,7 +137,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1197.0, 686.0, 58.0, 22.0 ],
-					"presentation_linecount" : 3,
 					"text" : "startTime",
 					"varname" : "ignore[4]"
 				}
@@ -81,43 +157,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-32",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 942.0, 523.0, 66.0, 22.0 ],
-					"text" : "cycle~ 200",
-					"varname" : "oscillator"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-24",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 942.0, 558.0, 40.0, 22.0 ],
-					"text" : "*~ 0.5",
-					"varname" : "operator"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-23",
-					"maxclass" : "ezdac~",
-					"numinlets" : 2,
-					"numoutlets" : 0,
-					"patching_rect" : [ 942.0, 600.0, 45.0, 45.0 ],
-					"varname" : "ignore[5]"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-6",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -131,12 +170,13 @@
 			}
 , 			{
 				"box" : 				{
+					"bgcolor" : [ 0.23921568627451, 0.149019607843137, 0.149019607843137, 1.0 ],
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1095.0, 713.0, 67.0, 22.0 ],
+					"patching_rect" : [ 1095.0, 716.0, 67.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "evolve.js",
 						"parameter_enable" : 0
@@ -147,50 +187,34 @@
 				}
 
 			}
-, 			{
-				"box" : 				{
-					"automatic" : 1,
-					"background" : 1,
-					"fgcolor" : [ 1.0, 0.968627450980392, 0.0, 1.0 ],
-					"gridcolor" : [ 0.682352941176471, 1.0, 0.698039215686274, 1.0 ],
-					"id" : "obj-623",
-					"inactivealpha" : 0.4,
-					"maxclass" : "scope~",
-					"numinlets" : 2,
-					"numoutlets" : 0,
-					"patching_rect" : [ -73.0, 25.5, 1980.0, 1154.0 ]
-				}
-
-			}
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-23", 1 ],
+					"destination" : [ "obj-46", 1 ],
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-49", 1 ],
 					"order" : 0,
-					"source" : [ "obj-24", 0 ]
+					"source" : [ "obj-46", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-23", 0 ],
+					"destination" : [ "obj-49", 0 ],
 					"order" : 1,
-					"source" : [ "obj-24", 0 ]
+					"source" : [ "obj-46", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-623", 0 ],
-					"order" : 2,
-					"source" : [ "obj-24", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-24", 0 ],
-					"source" : [ "obj-32", 0 ]
+					"destination" : [ "obj-46", 0 ],
+					"source" : [ "obj-50", 0 ]
 				}
 
 			}
@@ -222,6 +246,13 @@
 				}
 
 			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-8", 0 ]
+				}
+
+			}
  ],
 		"dependency_cache" : [ 			{
 				"name" : "evolve.js",
@@ -231,7 +262,9 @@
 				"implicit" : 1
 			}
  ],
-		"autosave" : 0
+		"autosave" : 0,
+		"default_bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+		"bgcolor" : [ 0.368627450980392, 0.352941176470588, 0.349019607843137, 1.0 ]
 	}
 
 }
