@@ -68,15 +68,16 @@ function ticker() {
     if (obj_to_highlight.varname.indexOf('trigger') > -1 || obj_to_highlight.maxclass == "message") {
       obj_to_highlight.setattr("bgfillcolor", 1.0, 1.0, 0.0, 1.0);
       for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
-	obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
-	obj_to_bang.message("int", 1);
+	// obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
+	// obj_to_bang.message("int", 1);
+	obj_to_highlight.message("bang");
       }
     } 
     else if (obj_to_highlight.varname.indexOf('bang') > -1 || obj_to_highlight.maxclass == "button") {
 	obj_to_highlight.setattr("outlinecolor", 1.0, 1.0, 0.0, 1.0);
 	for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
-	  obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
-	  obj_to_bang.message("bang");
+	  // obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
+	  obj_to_highlight.message("bang");
 	}
       } 
     else {
@@ -162,7 +163,7 @@ function resetColors()  {
       if (to_reset[i].getboxattrnames()[j] == "bgcolor") {
 	to_reset[i].setattr("bgcolor", 0.647, 0.647, 0.647, 1.0);
       }
-      if (to_reset[i].getboxattrnames()[j] == "color" && to_reset[i].maxclass != "ezdac~") {
+      if (to_reset[i].getboxattrnames()[j] == "color" && to_reset[i].maxclass != "mc.ezdac~" && to_reset[i].maxclass != "ezdac~") {
 	to_reset[i].setattr("color", 0.647, 0.647, 0.647, 1.000);
       }
       if (to_reset[i].getboxattrnames()[j] == "textcolor") {
