@@ -65,14 +65,14 @@ function ticker() {
       initialize();
     }
     obj_to_highlight = total_objs[total_objs.length-1];
-    if (obj_to_highlight.varname.indexOf('trigger') > -1) {
+    if (obj_to_highlight.varname.indexOf('trigger') > -1 || obj_to_highlight.maxclass == "message") {
       obj_to_highlight.setattr("bgfillcolor", 1.0, 1.0, 0.0, 1.0);
       for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
 	obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
 	obj_to_bang.message("int", 1);
       }
     } 
-    else if (obj_to_highlight.varname.indexOf('bang') > -1) {
+    else if (obj_to_highlight.varname.indexOf('bang') > -1 || obj_to_highlight.maxclass == "button") {
 	obj_to_highlight.setattr("outlinecolor", 1.0, 1.0, 0.0, 1.0);
 	for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
 	  obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
@@ -104,9 +104,9 @@ function initialize() {
   max_obj = p.firstobject;
 
   // grab an object that is not at the top or bottom end, must have inputs and outputs. TODO: is this necessary?
-  while (max_obj.patchcords['outputs'].length == 0 || max_obj.patchcords['inputs'].length == 0) {
-    max_obj = max_obj.nextobject;
-  }
+  // while (max_obj.patchcords['outputs'].length == 0 || max_obj.patchcords['inputs'].length == 0) {
+  //   max_obj = max_obj.nextobject;
+  // }
 
   // make sure it's not a 'ignore' object.
   while (max_obj.varname.indexOf('ignore') > -1) {
