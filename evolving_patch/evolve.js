@@ -11,7 +11,6 @@ var operator;
 var cmdline;
 var cmdline_listener;
 
-
 t  = new Task(ticker);
 t.interval = 3000;
 
@@ -56,6 +55,7 @@ function traverse(curr_Max_Obj){
 }
 
 function ticker() {
+  check_totalObjs();
   // reset all colors in every tick
   resetColors();
 
@@ -67,9 +67,19 @@ function ticker() {
     obj_to_highlight = total_objs[total_objs.length-1];
     if (obj_to_highlight.varname.indexOf('trigger') > -1) {
       obj_to_highlight.setattr("bgfillcolor", 1.0, 1.0, 0.0, 1.0);
-      obj_to_bang = obj_to_highlight.patchcords['outputs'][0].dstobject;
-      obj_to_bang.message("int", 1);
-    } else {
+      for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
+	obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
+	obj_to_bang.message("int", 1);
+      }
+    } 
+    else if (obj_to_highlight.varname.indexOf('bang') > -1) {
+	obj_to_highlight.setattr("outlinecolor", 1.0, 1.0, 0.0, 1.0);
+	for (var i = 0; i < obj_to_highlight.patchcords['outputs'].length; i++) {
+	  obj_to_bang = obj_to_highlight.patchcords['outputs'][i].dstobject;
+	  obj_to_bang.message("bang");
+	}
+      } 
+    else {
       for (var i = 0; i < obj_to_highlight.getboxattrnames().length; i++) {
 	if (obj_to_highlight.getboxattrnames()[i] == "bgcolor"){
 	  obj_to_highlight.setattr("bgcolor", 0.0, 0.0, 0.0, 1.0);
@@ -116,11 +126,25 @@ function initialize() {
   }
 
   traverse(max_obj);
+
+  if (total_objs > 1) {
+    total_objs.pop();
+  }
 }
 
 function center_cmdline() {
   var size = w.size;
   post("test")
+}
+
+function check_totalObjs(){
+  new_list = []
+  for (var i = 0; i < total_objs.length; i++) {
+    if (total_objs[i].valid) {
+      new_list.push(total_objs[i]);
+    }
+  }
+  total_objs = new_list;
 }
 
 function resetColors()  {
@@ -146,6 +170,9 @@ function resetColors()  {
       }
       if (to_reset[i].getboxattrnames()[j] == "bgfillcolor") {
 	to_reset[i].setattr("bgfillcolor", 0.647, 0.647, 0.647, 1.000);
+      }
+      if (to_reset[i].getboxattrnames()[j] == "outlinecolor") {
+	to_reset[i].setattr("outlinecolor", 0.349, 0.349, 0.349, 1.000);
       }
     }
   }
